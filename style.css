@@ -20,13 +20,17 @@ p {
   margin-top:10px;
 }
 
-div {
+div.header {
+  width:60%;
+}
+
+div.hide {
   background: #FCF5E5;
   padding: 10px;
   position: absolute;
 }
 
-div::after {
+div.hide::after {
   content: "";
   position: absolute;
   top: 100%;
