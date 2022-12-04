@@ -3,9 +3,12 @@ body {
   padding: 20px;
 }
 
-h3 {
+h1 {
+  font-family: sans-serif;
+}
+
+h2 {
 font-family: 'New Rocker', cursive;
-font-size:20px;
 padding:0;
 margin:0;
 }
@@ -31,4 +34,16 @@ div::after {
   left: 0;
   background: url(https://raw.githubusercontent.com/mazdun/Threats-Elected-Officials/8c091137a7f19c0d05a964cbf6dd2afc7a549798/svg/paper_image_parchment.svg) bottom;
   background-size: 200%;
+}
+
+.highlighted.blue {
+  background-image: linear-gradient(to top, #82AE9A 30%, transparent 0);
+}
+
+.highlighted.red {
+  background-image: linear-gradient(to top, #E49569 30%, transparent 0);
+}
+
+.highlighted.gray {
+  background-image: linear-gradient(to top, #C0C4BF 30%, transparent 0);
 }
