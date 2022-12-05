@@ -103,6 +103,7 @@ div.circle-and-instructions {
     float:left;
     position: relative; 
     left: 25px;
+    margin-bottom: 10px;
 }
 
 div.radius {
