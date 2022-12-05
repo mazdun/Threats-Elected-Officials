@@ -54,6 +54,7 @@ div.hide {
   background: #FCF5E5;
   padding: 10px;
   position: absolute;
+  margin-top: 40px;
 }
 
 div.hide::after {
