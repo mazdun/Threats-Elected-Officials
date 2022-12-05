@@ -5,8 +5,9 @@ body {
 }
 
 h1 {
-  font-family: sans-serif;
+font-family: 'Turret Road', cursive;
   font-size: 52px;
+  margin-bottom: 10px;
 }
 
 h2 {
@@ -31,7 +32,7 @@ p.legend {
 }
 
 @media (min-width: 800px) {
-  div.map, div.table, div.odds-ends {
+  div.hide, div.map, div.table, div.odds-ends {
     width: 70%;
   }
 }

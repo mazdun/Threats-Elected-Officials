@@ -1,5 +1,4 @@
 $(document).ready(function(){
-    $(".hide").hide();
     $(".marker-moseslake").click(function(){
     $(".hide").hide();
     $(".moseslake-txt").toggle();
