@@ -6,6 +6,5 @@
 
 https://mazdun.github.io/Threats-Elected-Officials/
 
-![GitHub Logo](/images/github-logo.png)
-
+[![Map Preview](/images/Threat_Map.png)](#)
 
