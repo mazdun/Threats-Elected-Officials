@@ -4,4 +4,8 @@
 - Various supervised learning models for classifying these types of articles
 - An interactive map and sortable table detailing all incidents since 2016
 
+https://mazdun.github.io/Threats-Elected-Officials/
+
+![GitHub Logo](/images/github-logo.png)
+
 
