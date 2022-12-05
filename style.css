@@ -26,6 +26,10 @@ h2.database-header {
   margin-bottom:10px;
 }
 
+p.subhead {
+  font-size: 25px;
+}
+
 p {
   font-family: sans-serif;
   padding:0;
