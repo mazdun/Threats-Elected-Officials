@@ -24,6 +24,8 @@
     }
    ],
    "source": [
+    "#Importing necessary packages\n",
+    "\n",
     "import pandas as pd\n",
     "\n",
     "import numpy as np\n",
@@ -3163,13 +3165,7 @@
       "utah sheriff resign amid inmate mistreatment investigation utah public radio utah public radio\n",
       "kemp call indict insurance commissioner resign atlanta voice\n",
       "appoint wife role holden mayor order resign allege nepotism kansas city\n",
-      "pressure intensify eu trade commissioner quit guernsey press\n"
-     ]
-    },
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
+      "pressure intensify eu trade commissioner quit guernsey press\n",
       "crestline mayor allen moore say plan resign end week racial slur video telegraph forum\n",
       "crabtree resign visalia unify school board friday last day visalia time delta tulare advance register\n",
       "caddo commissioner quit\n",
@@ -3206,7 +3202,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "#word level tf-idf\n",
+    "#word level term frequency–inverse document frequency (tf-idf)\n",
     "vectorizer = TfidfVectorizer(min_df=3,analyzer='word',max_features=3000)\n",
     "X_train_vectorized = vectorizer.fit_transform(X_train)\n",
     "X_test_vectorized=vectorizer.transform(X_test)"
@@ -3229,6 +3225,7 @@
     }
    ],
    "source": [
+    "#Basic Random Forest test\n",
     "rf=RandomForestClassifier(n_estimators=10)\n",
     "rf.fit(X_train_vectorized,y_train)"
    ]
@@ -3258,6 +3255,7 @@
     }
    ],
    "source": [
+    "#Testing the performance on the training data\n",
     "y_train_pred=rf.predict(X_train_vectorized)\n",
     "\n",
     "print(confusion_matrix(y_train,y_train_pred))\n",
@@ -3302,6 +3300,7 @@
     }
    ],
    "source": [
+    "#Testing the performance on the test data\n",
     "y_pred=rf.predict(X_test_vectorized)\n",
     "print(confusion_matrix(y_test,y_pred))\n",
     "print(classification_report(y_test,y_pred))\n",
@@ -3351,7 +3350,8 @@
     }
    ],
    "source": [
-    "#I will try to augment the minority class by adding synthetic headlines that rely on synonyms of actual headlines\n",
+    "#I will try to augment the minority class by adding synthetic headlines that rely on synonyms of a few of the \n",
+    "#words from the actual headlines\n",
     "\n",
     "import sys\n",
     "!{sys.executable} -m pip install nlpaug"
@@ -3386,7 +3386,7 @@
     "#I want no more than 3 synonymns added in each original headline\n",
     "aug = naw.SynonymAug(aug_src='wordnet',aug_max=3, stopwords=stopwords.words('english'))\n",
     "\n",
-    "#I will add 40 new headlines for each one existing\n",
+    "#I will add 40 new headlines for each existing one\n",
     "augmented_sentences=[]\n",
     "augmented_sentences_labels=[]\n",
     "temps=[]\n",
@@ -4415,7 +4415,9 @@
     }
    ],
    "source": [
-    "augmented_sentences"
+    "augmented_sentences\n",
+    "\n",
+    "#Some of these are not great at all. Let's see how the model does"
    ]
   },
   {
@@ -4445,6 +4447,8 @@
     }
    ],
    "source": [
+    "#Using the ExtraTreesClassifier\n",
+    "\n",
     "vectorizer = TfidfVectorizer(min_df=3,analyzer='word',max_features=3000)\n",
     "X_train_vectorized = vectorizer.fit_transform(X_train)\n",
     "X_test_vectorized=vectorizer.transform(X_test)\n",
@@ -4478,6 +4482,7 @@
     }
    ],
    "source": [
+    "#Results on training data\n",
     "y_train_pred=classifier.predict(X_train_vectorized)\n",
     "\n",
     "print(confusion_matrix(y_train,y_train_pred))\n",
@@ -4510,6 +4515,7 @@
     }
    ],
    "source": [
+    "#Results on testing data \n",
     "y_pred=classifier.predict(X_test_vectorized)\n",
     "print(confusion_matrix(y_test,y_pred))\n",
     "print(classification_report(y_test,y_pred))\n",
@@ -4594,6 +4600,8 @@
     }
    ],
    "source": [
+    "#Results on training data \n",
+    "\n",
     "y_train_pred=classifier.predict(X_train_vectorized)\n",
     "\n",
     "print(confusion_matrix(y_train,y_train_pred))\n",
@@ -4626,6 +4634,8 @@
     }
    ],
    "source": [
+    "#Results on testing data\n",
+    "\n",
     "y_pred=classifier.predict(X_test_vectorized)\n",
     "print(confusion_matrix(y_test,y_pred))\n",
     "print(classification_report(y_test,y_pred))\n",
@@ -4639,8 +4649,9 @@
    "outputs": [],
    "source": [
     "#Precision and recall are always tradeoffs. \n",
-    "#In this model, precision is perfect but recall is really low. I actually want it to be the other way around \n",
-    "#where recall is fairly high. "
+    "#In this model, precision is very high but recall is fairly low. \n",
+    "#This means that the ones that it is classifiying as true articles are correct but since the recall is low, \n",
+    "#it is missing many articles. I actually want it to be the other way around where recall is fairly high. "
    ]
   },
   {
@@ -4755,6 +4766,15 @@
     "print(confusion_matrix(y_test,y_pred))\n",
     "print(classification_report(y_test,y_pred))\n",
     "print(accuracy_score(y_test, y_pred))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Again, while precision is high, recall is low. I will try other oversampling methods."
    ]
   },
   {
@@ -4884,10 +4904,13 @@
     "#That's good if our goal is to be aware of as many of these articles as possible and not let too many of them \n",
     "#slip through the cracks.\n",
     "\n",
-    "#The downside is we have quite a few false positives (276) — articles that were classified as threat/resignation\n",
+    "#The downside is we have quite a few false positives (67) — articles that were classified as threat/resignation\n",
     "#articles but actually weren't. But I would rather err on the side of having to check more articles.\n",
-    "#We have relatively few false negatives (9) — articles classified as not a threat/resignation articles but actually are\n",
-    "#ones — which is good.\n"
+    "#We have relatively few false negatives (2) — articles classified as not a threat/resignation articles but actually are\n",
+    "#ones — which is good.\n",
+    "\n",
+    "#However, to be sure, this model suffers from a lack of data. There are only 6 samples in the positive class in the\n",
+    "#testing set. \n"
    ]
   },
   {
@@ -5003,7 +5026,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "#SVC did not help our performance at all"
+    "#SVC did not help our performance too much."
    ]
   },
   {
@@ -5115,6 +5138,15 @@
   },
   {
    "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#About the same recall here as the Random Forest model above."
+   ]
+  },
+  {
+   "cell_type": "code",
    "execution_count": 421,
    "metadata": {},
    "outputs": [],
@@ -5221,256 +5253,17 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "### Combining the synonym method above and SMOTE?"
+    "## Takeaways"
    ]
   },
   {
-   "cell_type": "code",
-   "execution_count": 479,
+   "cell_type": "markdown",
    "metadata": {},
-   "outputs": [],
    "source": [
-    "train[\"text\"]= train[\"text\"].apply(clean_text)\n",
-    "train = train.sample(frac=1).reset_index(drop=True)\n",
+    "Recall is better with the Synthetic Minority Oversampling Technique (SMOTE) and with tree-based classifiers. However, more data is needed to get a good idea of how it performs. \n",
     "\n",
-    "X = train['text']\n",
-    "y = train['target']\n",
-    "\n",
-    "#I want no more than 2 synonymns added in each original headline\n",
-    "aug = naw.SynonymAug(aug_src='wordnet',aug_max=2, stopwords=stopwords.words('english'))\n",
-    "\n",
-    "#I will add 20 new headlines for each one existing\n",
-    "augmented_sentences=[]\n",
-    "augmented_sentences_labels=[]\n",
-    "temps=[]\n",
-    "for i in X.index:\n",
-    "    if y[i]==1:\n",
-    "        temps=aug.augment(X[i],n=20)\n",
-    "    for sent in temps:\n",
-    "        augmented_sentences.append(sent)\n",
-    "        augmented_sentences_labels.append(1)\n",
-    "        \n",
-    "X=X.append(pd.Series(augmented_sentences),ignore_index=True)\n",
-    "y=y.append(pd.Series(augmented_sentences_labels),ignore_index=True)\n"
+    "It would be better to train the model on the full article text since the headlines might not provide enough information for the model. It might also be fruitful to balance the classes by going to Google News and finding ALL the newsrooms that covered each particular threat story. In this model, only one news article per resignation is included."
    ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 480,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "Pipeline(steps=[('vect', CountVectorizer()), ('smote', SMOTE(random_state=12)),\n",
-       "                ('nb', RandomForestClassifier())])"
-      ]
-     },
-     "execution_count": 480,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "#Now applying SMOTE to the augmented sample\n",
-    "\n",
-    "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=0)\n",
-    "\n",
-    "textclassifier = Pipeline([\n",
-    "    ('vect', CountVectorizer()),\n",
-    "    ('smote', SMOTE(random_state=12)),\n",
-    "    ('nb', MultinomialNB())\n",
-    "])\n",
-    "\n",
-    "textclassifier.fit(X_train, y_train)\n"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 481,
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "[[ 2497     0]\n",
-      " [    0 47142]]\n",
-      "              precision    recall  f1-score   support\n",
-      "\n",
-      "           0       1.00      1.00      1.00      2497\n",
-      "           1       1.00      1.00      1.00     47142\n",
-      "\n",
-      "    accuracy                           1.00     49639\n",
-      "   macro avg       1.00      1.00      1.00     49639\n",
-      "weighted avg       1.00      1.00      1.00     49639\n",
-      "\n",
-      "1.0\n"
-     ]
-    }
-   ],
-   "source": [
-    "y_train_pred=textclassifier.predict(X_train)\n",
-    "\n",
-    "print(confusion_matrix(y_train,y_train_pred))\n",
-    "print(classification_report(y_train,y_train_pred))\n",
-    "print(accuracy_score(y_train, y_train_pred))"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 482,
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "[[ 271    0]\n",
-      " [   0 5245]]\n",
-      "              precision    recall  f1-score   support\n",
-      "\n",
-      "           0       1.00      1.00      1.00       271\n",
-      "           1       1.00      1.00      1.00      5245\n",
-      "\n",
-      "    accuracy                           1.00      5516\n",
-      "   macro avg       1.00      1.00      1.00      5516\n",
-      "weighted avg       1.00      1.00      1.00      5516\n",
-      "\n",
-      "1.0\n"
-     ]
-    }
-   ],
-   "source": [
-    "y_pred=textclassifier.predict(X_test)\n",
-    "print(confusion_matrix(y_test,y_pred))\n",
-    "print(classification_report(y_test,y_pred))\n",
-    "print(accuracy_score(y_test, y_pred))"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 483,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "#Testing on not before seen data\n",
-    "\n",
-    "test[\"text\"]= test[\"text\"].apply(clean_text)\n",
-    "test = test.sample(frac=1).reset_index(drop=True)\n",
-    "\n",
-    "X = test['text']\n",
-    "y = test['target']\n",
-    "\n",
-    "y_predicted_test = textclassifier.predict(X)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 484,
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "[[1488    3]\n",
-      " [  24    2]]\n",
-      "              precision    recall  f1-score   support\n",
-      "\n",
-      "           0       0.98      1.00      0.99      1491\n",
-      "           1       0.40      0.08      0.13        26\n",
-      "\n",
-      "    accuracy                           0.98      1517\n",
-      "   macro avg       0.69      0.54      0.56      1517\n",
-      "weighted avg       0.97      0.98      0.98      1517\n",
-      "\n",
-      "0.982201713909031\n"
-     ]
-    }
-   ],
-   "source": [
-    "print(confusion_matrix(y,y_predicted_test))\n",
-    "print(classification_report(y,y_predicted_test))\n",
-    "print(accuracy_score(y,y_predicted_test))"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
   },
   {
    "cell_type": "code",
