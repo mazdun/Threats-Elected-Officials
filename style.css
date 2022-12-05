@@ -93,3 +93,66 @@ table { border: 1px ; border-collapse: collapse; min-width:400px}
         table#demo2.js-sort-9 tbody tr td:nth-child(10) {
             background: #dee;
         }
+
+div.circle-and-instructions {
+    float:left;
+    position: relative; 
+    left: 25px;
+}
+
+div.radius {
+    float:left;
+    display: inline-block;
+    position: absolute;
+    top:10px;
+    left:-15px;
+}
+
+.radius{
+  width: 20px;
+  height:20px;
+  border-radius:100%;
+  position:absolute;
+  top:30%;
+  left:20%;
+  -webkit-transform:translate(-50%,-50%);
+  transform:translate(-50%,-50%);
+}
+.place{
+  background:#ea4335;
+  z-index:2;
+}
+.radius .border-animation, .place{
+  display:block;
+  width:100%;
+  height:100%;
+  position:absolute;
+  border-radius:100%;
+}
+.radius .border-animation{
+  z-index:1;
+}
+.ba1{
+  animation: rounder1 2s linear 2s infinite alternate;
+  background:rgba(238,76,63,0.6);
+}
+@keyframes rounder1 {
+  from {transform:scale(1);}
+  to {transform:scale(1.39);}
+}
+.ba2{
+  animation: rounder2 2s linear 2s infinite alternate;
+  background:rgba(245,85,71,0.5);
+}
+@keyframes rounder2 {
+  from {transform:scale(1);}
+  to {transform:scale(1.69);}
+}
+.ba3{
+  animation: rounder3 2s linear 2s infinite alternate;
+  background:rgba(251,97,84,0.4);
+}
+@keyframes rounder3 {
+  from {transform:scale(1);}
+  to {transform:scale(1.99);} 
+}
