@@ -46,6 +46,10 @@ div.hide {
   }
 }
 
+div.map {
+  margin-top:30px;
+}
+
 div.top {
   width:80%;
 }
