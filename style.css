@@ -32,7 +32,7 @@ p.legend {
 }
 
 @media (min-width: 800px) {
-  div.map, div.table, div.odds-ends, p.legend {
+  div.map, div.table, div.odds-ends, p.legend, p.instructions {
     width: 70%;
   }
 }
