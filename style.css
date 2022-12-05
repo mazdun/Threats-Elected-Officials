@@ -30,11 +30,6 @@ p.legend {
   size=20px;
 }
 
-@media only screen and (min-width: 800px) {
-  div.map, div.table, div.odds-ends {
-    width: 70%;
-  }
-}
 
 div.top {
   width:80%;
